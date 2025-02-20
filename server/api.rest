@@ -1,0 +1,25 @@
+### Create a new transaction
+POST http://localhost:5000/api/transactions/addTransaction
+Content-Type: application/json
+
+{
+    "amount": 3000,
+    "date": "2025-02-19",
+    "description": "Grocery shopping"
+} 
+
+### Get all Transactions
+GET http://localhost:5000/api/transactions/getTransaction
+
+### Edit the transaction
+PUT http://localhost:5000/api/transactions/updateTransaction/67b62c8ee6d42061caf7851a
+Content-Type: application/json
+
+{
+     "amount": 5000,
+    "date": "2025-02-19",
+    "description": "Grocery shopping"
+}
+
+### Delete a transaction
+DELETE http://localhost:5000/api/transactions/deleteTransaction/67b62c8ee6d42061caf7851a
