@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useExpenses  } from "../store/ExpenseContext";
+import { toast } from "react-toastify";
 
 function AddExpenseForm({ isEdit }) {
   const navigate = useNavigate();
@@ -46,11 +47,43 @@ function AddExpenseForm({ isEdit }) {
 
         if (response.ok) {
           fetchExpenses()
+          Swal.fire({
+                      title: "Updated!",
+                      text: "The expense has been Updated.",
+                      background: "#1a202c",  
+                      color: "#fff",  
+                      icon: "success",
+                      confirmButtonColor: "#3085d6",
+                    });
           navigate("/expenses"); 
+          console.log(response)
         }
       } catch (error) {
-        console.error("Error updating expense:", error);
+        const errorData = await error.response.json(); // Parse the error response
+      
+        if (errorData?.errors?.length > 0) {
+          const errorMessage = errorData.errors.map(err => `${err.path}: ${err.message}`).join("\n");
+      
+          Swal.fire({
+            title: "Validation Error",
+            text: errorMessage,
+            icon: "error",
+            background: "#121212",
+            color: "#fff",
+            confirmButtonColor: "#d33"
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "Something went wrong. Please try again.",
+            icon: "error",
+            background: "#121212",
+            color: "#fff",
+            confirmButtonColor: "#d33"
+          });
+        }
       }
+      
     } else {
       // Add New Expense using Context
       addExpense(expenseData);

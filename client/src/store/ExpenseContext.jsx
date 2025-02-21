@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useReducer, useState } from "react";
+import Swal from "sweetalert2";
 
 const ExpenseContext = createContext();
 
@@ -7,8 +8,8 @@ const expenseReducer = (state, action) => {
     case "SET_EXPENSES":
       return action.payload;
     case "ADD_EXPENSE":
-      return [action.payload, ...state]; // Add new expense at the beginning
-    case "DELETE_EXPENSE":
+      return [action.payload, ...state]; 
+    case "DELETE_EXPENSE": 
       return state.filter((expense) => expense._id !== action.payload);
     default:
       return state;
@@ -52,35 +53,109 @@ export const ExpenseProvider = ({ children }) => {
         },
         body: JSON.stringify(expense),
       });
-
+console.log(response, "line-56")
       if (response.ok) {
-        await fetchExpenses(); // Fetch updated expenses immediately
+        Swal.fire({
+          title: "Added!",
+          text: "The expense has been Added.",
+          background: "#1a202c",  
+          color: "#fff",  
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+        });       
+         await fetchExpenses(); // Fetch updated expenses immediately
       }
-    } catch (error) {
+      else {
+        // console.log(response.json(),"line-69")
+        const errorData = await response.json();
+        console.log(errorData.errors[0].message)
+        const errorMessage = errorData.errors[0].message
+        Swal.fire({
+          title: "Validation Error",
+          text: errorMessage || "Failed to Add the expense.",
+          icon: "error",
+          background: "#1a202c",
+          color: "#fff",
+          confirmButtonColor: "#d33"
+        });
+        
+
+      
+    }
+  } catch (error) {
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to Add the expense.",
+        background: "#1a202c",  
+        color: "#fff",  
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
       console.error("Error adding expense:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const deleteExpense = async (id) => {
-    if (window.confirm("Are you sure you want to delete this expense?")) {
+
+
+const deleteExpense = async (id) => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This action cannot be undone!",
+    icon: "warning",
+    background: "#1a202c",  // Dark background
+    color: "#fff",  // White text
+    showCancelButton: true,
+    confirmButtonColor: "#d33",  // Red confirm button
+    cancelButtonColor: "#3085d6",  // Blue cancel button
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "Cancel",
+  }).then(async (result) => {
+    if (result.isConfirmed) {
       setLoading(true);
       try {
-        const response = await fetch(`https://finance-visualizer-snowy.vercel.app/api/transactions/deleteTransaction/${id}`, {
-          method: "DELETE",
-        });
+        const response = await fetch(
+          `https://finance-visualizer-snowy.vercel.app/api/transactions/deleteTransaction/${id}`,
+          { method: "DELETE" }
+        );
 
         if (response.ok) {
           await fetchExpenses(); // Fetch updated expenses immediately
+          Swal.fire({
+            title: "Deleted!",
+            text: "The expense has been deleted.",
+            background: "#1a202c",  
+            color: "#fff",  
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+          });
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to delete the expense.",
+            background: "#1a202c",  
+            color: "#fff",  
+            icon: "error",
+            confirmButtonColor: "#d33",
+          });
         }
       } catch (error) {
         console.error("Error deleting expense:", error);
+        Swal.fire({
+          title: "Error!",
+          text: "Something went wrong.",
+          background: "#1a202c",  
+            color: "#fff",  
+          icon: "error",
+          confirmButtonColor: "#d33",
+        });
       } finally {
         setLoading(false);
       }
     }
-}
+  });
+};
 
   return (
     <ExpenseContext.Provider value={{ expenses, loading, addExpense, deleteExpense  , fetchExpenses  }}>

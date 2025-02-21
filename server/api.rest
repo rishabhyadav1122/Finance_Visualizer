@@ -16,7 +16,7 @@ PUT http://localhost:5000/api/transactions/updateTransaction/67b62c8ee6d42061caf
 Content-Type: application/json
 
 {
-     "amount": 5000,
+     "amount": -2,
     "date": "2025-02-19",
     "description": "Grocery shopping"
 }
