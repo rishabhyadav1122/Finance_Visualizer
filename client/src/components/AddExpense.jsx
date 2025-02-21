@@ -135,7 +135,7 @@ function AddExpenseForm({ isEdit }) {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all"
+          className="w-full cursor-pointer bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all"
         >
           {isEdit ? "Update Expense" : "Add Expense"}
         </motion.button>
