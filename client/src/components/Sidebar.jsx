@@ -16,7 +16,7 @@ function Sidebar({ isOpen }) {
       animate={{ width: isOpen ? 256 : 0 }}
       className="fixed top-0 left-0 h-full bg-gray-900 text-white overflow-hidden border-r border-gray-800"
     >
-      <div className="p-6 space-y-4">
+      <div className="mt-9 p-6 space-y-4">
         {menuItems.map((item, index) => (
           <motion.div
             key={index}
