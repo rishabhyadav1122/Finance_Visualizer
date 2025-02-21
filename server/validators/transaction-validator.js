@@ -13,7 +13,7 @@ const transactionValidator = z.object({
         invalid_type_error: 'Description must be a string'
     }).min(1, "Description cannot be empty"),
 
-    // category: z.string().optional(),
+    category: z.string().optional(),
 });
 
 module.exports = transactionValidator; 

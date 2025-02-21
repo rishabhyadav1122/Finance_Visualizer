@@ -12,11 +12,12 @@ const TransactionSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
+  },
+  category: {
+    type: String,
+    enum: ["Food", "Rent", "Entertainment", "Shopping", "Transport", "Other"], // Add categories
+    required: true,
   }
-//   category: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'Category',
-//   },
 });
 
 module.exports = mongoose.model('Transaction', TransactionSchema);

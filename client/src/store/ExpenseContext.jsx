@@ -19,10 +19,62 @@ const expenseReducer = (state, action) => {
 export const ExpenseProvider = ({ children }) => {
   const [expenses, dispatch] = useReducer(expenseReducer, []);
   const [loading, setLoading] = useState(true); // New loading state
+  const [categories, setCategories] = useState([]);
+  const [summary, setSummary] = useState([]);
+  const [catSummary, setCatSummary] = useState(null); // State to store summary data
 
   useEffect(() => {
-    fetchExpenses();
+    fetchExpenses(),
+    getAllSummary()
+    getCatSummary()
   }, []);
+
+
+  const getCategory = async () => {
+    try {
+      const response = await fetch('https://finance-visualizer-snowy.vercel.app/api/transactions/getCategory');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json(); // Parse the JSON response
+      setCategories(data); // Update the state with the fetched categories
+      return data;
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+      throw error;
+    }
+  };
+
+  // Fetch summary
+  const getCatSummary = async () => {
+    try {
+      const response = await fetch('https://finance-visualizer-snowy.vercel.app/api/transactions/getCatSummary');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setCatSummary(data); // Update the summary state
+      return data;
+    } catch (error) {
+      console.error('Error fetching summary:', error);
+      throw error;
+    }
+  };
+
+  const getAllSummary = async () => {
+    try {
+      const response = await fetch('https://finance-visualizer-snowy.vercel.app/api/transactions/getAllSummary');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setSummary(data); // Update the summary state
+      return data;
+    } catch (error) {
+      console.error('Error fetching summary:', error);
+      throw error;
+    }
+  };
 
 
   const fetchExpenses = async () => {
@@ -40,6 +92,8 @@ export const ExpenseProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+
 
 
 
@@ -158,7 +212,7 @@ const deleteExpense = async (id) => {
 };
 
   return (
-    <ExpenseContext.Provider value={{ expenses, loading, addExpense, deleteExpense  , fetchExpenses  }}>
+    <ExpenseContext.Provider value={{ expenses, loading, addExpense, deleteExpense  , fetchExpenses , categories  , getCategory , summary , setSummary , catSummary , setCatSummary,getCatSummary , getAllSummary }}>
       {children}
     </ExpenseContext.Provider>
   );

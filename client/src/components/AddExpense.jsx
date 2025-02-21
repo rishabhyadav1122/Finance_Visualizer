@@ -1,25 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useExpenses  } from "../store/ExpenseContext";
-import { toast } from "react-toastify";
+import { useExpenses } from "../store/ExpenseContext";
+import Swal from "sweetalert2"; // Import Swal for alerts
 
 function AddExpenseForm({ isEdit }) {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { addExpense  , fetchExpenses} = useExpenses(); // Use context
+  const { addExpense, fetchExpenses, categories, setCategories , getCategory } = useExpenses(); // Use context
   const [formData, setFormData] = useState({
     amount: "",
     description: "",
     date: new Date().toISOString().split("T")[0],
+    category: "", // Add category to formData
   });
 
+  // Fetch categories when the component mounts
+  useEffect(() => {
+    getCategory()  
+  }, [setCategories]);
+
+  // Fetch expense data if in edit mode
   useEffect(() => {
     if (isEdit && id) {
       fetch(`https://finance-visualizer-snowy.vercel.app/api/transactions/getTransaction/${id}`)
         .then((res) => res.json())
         .then((data) => setFormData(data))
-        // .then(()=>fetchExpenses())
         .catch((err) => console.error("Error fetching expense:", err));
     }
   }, [isEdit, id]);
@@ -31,6 +37,7 @@ function AddExpenseForm({ isEdit }) {
       amount: Number(formData.amount),
       description: formData.description,
       date: formData.date,
+      category: formData.category, // Include category in the expense data
     };
 
     if (isEdit) {
@@ -46,44 +53,28 @@ function AddExpenseForm({ isEdit }) {
         );
 
         if (response.ok) {
-          fetchExpenses()
+          fetchExpenses();
           Swal.fire({
-                      title: "Updated!",
-                      text: "The expense has been Updated.",
-                      background: "#1a202c",  
-                      color: "#fff",  
-                      icon: "success",
-                      confirmButtonColor: "#3085d6",
-                    });
-          navigate("/expenses"); 
-          console.log(response)
+            title: "Updated!",
+            text: "The expense has been updated.",
+            background: "#1a202c",
+            color: "#fff",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+          });
+          navigate("/expenses");
         }
       } catch (error) {
-        const errorData = await error.response.json(); // Parse the error response
-      
-        if (errorData?.errors?.length > 0) {
-          const errorMessage = errorData.errors.map(err => `${err.path}: ${err.message}`).join("\n");
-      
-          Swal.fire({
-            title: "Validation Error",
-            text: errorMessage,
-            icon: "error",
-            background: "#121212",
-            color: "#fff",
-            confirmButtonColor: "#d33"
-          });
-        } else {
-          Swal.fire({
-            title: "Error",
-            text: "Something went wrong. Please try again.",
-            icon: "error",
-            background: "#121212",
-            color: "#fff",
-            confirmButtonColor: "#d33"
-          });
-        }
+        console.error("Error updating expense:", error);
+        Swal.fire({
+          title: "Error",
+          text: "Something went wrong. Please try again.",
+          icon: "error",
+          background: "#121212",
+          color: "#fff",
+          confirmButtonColor: "#d33",
+        });
       }
-      
     } else {
       // Add New Expense using Context
       addExpense(expenseData);
@@ -112,6 +103,22 @@ function AddExpenseForm({ isEdit }) {
           />
         </div>
         <div>
+          <label className="block text-gray-400 mb-2">Category</label>
+          <select
+  value={formData.category}
+  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+  className="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+  required
+>
+  <option value="" disabled>Select a category</option>
+  {categories.map((cat) => (
+    <option key={cat} value={cat}>
+      {cat}
+    </option>
+  ))}
+</select>
+        </div>
+        <div>
           <label className="block text-gray-400 mb-2">Description</label>
           <input
             type="text"
@@ -127,8 +134,9 @@ function AddExpenseForm({ isEdit }) {
             type="date"
             value={formData.date}
             onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-            className="w-full bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full  bg-gray-700 text-white px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none cursor-not-allowed focus:outline-none"
             required
+            readOnly
           />
         </div>
         <motion.button

@@ -20,6 +20,7 @@ function ExpenseCard({ expense }) {
         <IndianRupeeIcon className="w-6 h-6 mt-1" />
         {expense.amount}
       </p>
+      <p className='text-yellow-300'>{expense.category}</p>
       <p className="text-gray-400">{expense.description}</p>
       <p className="text-gray-500">{new Date(expense.date).toLocaleDateString()}</p>
       <div className="mt-4 flex space-x-2">
