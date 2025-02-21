@@ -27,7 +27,7 @@ export const ExpenseProvider = ({ children }) => {
   const fetchExpenses = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/transactions/getTransaction");
+      const response = await fetch("https://finance-visualizer-snowy.vercel.app/api/transactions/getTransaction");
       if (response.ok) {
         const data = await response.json();
         const sortedExpenses = data.sort((a, b) => new Date(b.date) - new Date(a.date)); // Reverse order
@@ -45,7 +45,7 @@ export const ExpenseProvider = ({ children }) => {
   const addExpense = async (expense) => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/transactions/addTransaction", {
+      const response = await fetch("https://finance-visualizer-snowy.vercel.app/api/transactions/addTransaction", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export const ExpenseProvider = ({ children }) => {
     if (window.confirm("Are you sure you want to delete this expense?")) {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:5000/api/transactions/deleteTransaction/${id}`, {
+        const response = await fetch(`https://finance-visualizer-snowy.vercel.app/api/transactions/deleteTransaction/${id}`, {
           method: "DELETE",
         });
 

@@ -15,7 +15,7 @@ function AddExpenseForm({ isEdit }) {
 
   useEffect(() => {
     if (isEdit && id) {
-      fetch(`http://localhost:5000/api/transactions/getTransaction/${id}`)
+      fetch(`https://finance-visualizer-snowy.vercel.app/api/transactions/getTransaction/${id}`)
         .then((res) => res.json())
         .then((data) => setFormData(data))
         // .then(()=>fetchExpenses())
@@ -36,7 +36,7 @@ function AddExpenseForm({ isEdit }) {
       // Update Expense
       try {
         const response = await fetch(
-          `http://localhost:5000/api/transactions/updateTransaction/${id}`,
+          `https://finance-visualizer-snowy.vercel.app/api/transactions/updateTransaction/${id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
