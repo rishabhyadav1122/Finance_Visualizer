@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Home from "./pages/Home";
 import MonthlyChart from "./pages/MonthlyChart";
 import Analytics from "./pages/Analytics";
+import BudgetPage from "./pages/Budget";
 
 const pageVariants = {
   initial: { opacity: 0, y: 10 },
@@ -42,6 +43,14 @@ function AnimatedRoutes() {
             element={
               <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
                 <Analytics />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/budget"
+            element={
+              <motion.div variants={pageVariants} initial="initial" animate="animate" exit="exit">
+                <BudgetPage/>
               </motion.div>
             }
           />

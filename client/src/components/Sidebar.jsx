@@ -7,7 +7,7 @@ function Sidebar({ isOpen }) {
   const menuItems = [
     { icon: Calendar, text: 'Monthly Expenses', path: '/monthly' },
     { icon: PieChart, text: 'Analytics', path: '/analytics' },
-    { icon: Settings, text: 'Settings', path: '/settings' },
+    { icon: Settings, text: 'Budget', path: '/budget' },
   ];
  
   return (

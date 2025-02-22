@@ -28,7 +28,7 @@ function ExpenseCard({ expense }) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => navigate(`/edit/${expense._id}`)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all flex items-center"
+          className="px-4 py-2 bg-blue-600 cursor-pointer text-white rounded-lg hover:bg-blue-700 transition-all flex items-center"
         >
           <Edit2 className="w-4 h-4 mr-2" /> Edit
         </motion.button>
@@ -36,7 +36,7 @@ function ExpenseCard({ expense }) {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => deleteExpense(expense._id)}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all flex items-center"
+          className="px-4 py-2 cursor-pointer bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all flex items-center"
         >
           <Trash2 className="w-4 h-4 mr-2" /> Delete
         </motion.button>

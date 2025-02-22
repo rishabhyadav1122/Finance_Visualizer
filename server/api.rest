@@ -36,3 +36,15 @@ GET http://localhost:5000/api/transactions/getAllSummary
 
 ### Get Category Summary
 GET http://localhost:5000/api/transactions/getCatSummary
+
+### Get All budgets
+GET http://localhost:5000/api/budgets/getAllBudget
+
+### Update any Budget 
+POST http://localhost:5000/api/budgets/updateCategoryBudget
+Content-Type: application/json
+
+{
+    "category":"Food",
+     "amount": 5000
+}

@@ -5,6 +5,7 @@ const app = express();
 const cors = require('cors');
 const connectDB = require('../utils/db');
 const transactionsRoute = require('../router/transaction-router')
+const budgetRoute = require('../router/budget-router')
 
 
 
@@ -20,6 +21,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/transactions', transactionsRoute);
+app.use('/api/budgets', budgetRoute);
 
 
 // Starting the server

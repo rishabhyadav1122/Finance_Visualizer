@@ -22,11 +22,13 @@ export const ExpenseProvider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [summary, setSummary] = useState([]);
   const [catSummary, setCatSummary] = useState(null); // State to store summary data
+  const [budgets, setBudgets] = useState({});
 
   useEffect(() => {
-    fetchExpenses(),
+    fetchExpenses()
     getAllSummary()
     getCatSummary()
+    fetchBudgets()
   }, []);
 
 
@@ -97,60 +99,162 @@ export const ExpenseProvider = ({ children }) => {
 
 
 
+
   const addExpense = async (expense) => {
     setLoading(true);
     try {
-      const response = await fetch("https://finance-visualizer-snowy.vercel.app/api/transactions/addTransaction", {
-        method: "POST",
+    const response = await fetch("https://finance-visualizer-snowy.vercel.app/api/transactions/addTransaction", {
+    method: "POST",
+    headers: {
+    "Content-Type": "application/json",
+    },
+    body: JSON.stringify(expense),
+    });
+    console.log(response, "line-56");
+    const totalSpending = expenses
+  .filter((e) => e.category === expense.category)
+  .reduce((sum, e) => sum + e.amount, 0) + expense.amount;
+
+const categoryBudget = budgets[expense.category] || 0; // Get the category budget
+
+if (categoryBudget && totalSpending > categoryBudget) {
+  const { isConfirmed } = await Swal.fire({
+    title: "Budget Exceeded!",
+    text: `Adding this expense will exceed your budget for ${expense.category}. Do you still want to proceed?`,
+    icon: "warning",
+    background: "#1a202c",
+    color: "#fff",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, add it!",
+  });
+
+  if (!isConfirmed) {
+    setLoading(false);
+    return;
+  }
+}
+
+if (response.ok) {
+  Swal.fire({
+    title: "Added!",
+    text: "The expense has been added.",
+    background: "#1a202c",
+    color: "#fff",
+    icon: "success",
+    confirmButtonColor: "#3085d6",
+  });
+  await fetchExpenses(); // Fetch updated expenses immediately
+} else {
+  const errorData = await response.json();
+  console.log(errorData.errors[0].message);
+  const errorMessage = errorData.errors[0].message;
+  Swal.fire({
+    title: "Validation Error",
+    text: errorMessage || "Failed to add the expense.",
+    icon: "error",
+    background: "#1a202c",
+    color: "#fff",
+    confirmButtonColor: "#d33",
+  });
+}} catch (error) {
+  Swal.fire({
+  title: "Error!",
+  text: "Failed to add the expense.",
+  background: "#1a202c",
+  color: "#fff",
+  icon: "error",
+  confirmButtonColor: "#d33",
+  });
+  console.error("Error adding expense:", error);
+  } finally {
+  setLoading(false);
+  }
+  };
+
+
+
+  const fetchBudgets = async () => {
+    try {
+      // Use fetch to make a GET request
+      const response = await fetch("https://finance-visualizer-snowy.vercel.app/api/budgets/getAllBudget");
+  
+      const data = await response.json();
+      // Check if the response is successful
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      // Parse the JSON data from the response
+  
+      // Transform the data into the desired format
+      const budgetData = data.reduce((acc, curr) => {
+        acc[curr.category] = curr.amount;
+        return acc;
+      }, {});
+  
+      // Update state with the transformed data
+      setBudgets(budgetData);
+    } catch (error) {
+      console.error("Error fetching budgets:", error.message);
+    }
+  };
+
+
+
+
+  const updateCategoryBudget = async (category, amount) => {
+    try {
+      // Use fetch to make a POST request
+      const response = await fetch("https://finance-visualizer-snowy.vercel.app/api/budgets/updateCategoryBudget", {
+        method: "POST", // Specify the HTTP method
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json", // Set the content type to JSON
         },
-        body: JSON.stringify(expense),
+        body: JSON.stringify({ category, amount }), // Convert the data to JSON
       });
-console.log(response, "line-56")
-      if (response.ok) {
+  
+      const data = await response.json();
+      // Check if the response is successful
+
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      // Parse the JSON data from the response
+  
+      // Update the state with the new budget data
+      if(response.ok)
+      {
+        setBudgets((prev) => ({ ...prev, [category]: data.amount }));
         Swal.fire({
-          title: "Added!",
-          text: "The expense has been Added.",
+          title: "Updated!",
+          text: "The Budget has been Updated.",
           background: "#1a202c",  
           color: "#fff",  
           icon: "success",
           confirmButtonColor: "#3085d6",
-        });       
-         await fetchExpenses(); // Fetch updated expenses immediately
-      }
-      else {
-        // console.log(response.json(),"line-69")
-        const errorData = await response.json();
-        console.log(errorData.errors[0].message)
-        const errorMessage = errorData.errors[0].message
+        });  
+
+      }else {
         Swal.fire({
-          title: "Validation Error",
-          text: errorMessage || "Failed to Add the expense.",
+          title: "Update Error",
+          text:"Failed to Update the Budget.",
           icon: "error",
           background: "#1a202c",
           color: "#fff",
           confirmButtonColor: "#d33"
         });
-        
-
-      
-    }
-  } catch (error) {
-      Swal.fire({
-        title: "Error!",
-        text: "Failed to Add the expense.",
-        background: "#1a202c",  
-        color: "#fff",  
-        icon: "error",
-        confirmButtonColor: "#d33",
-      });
-      console.error("Error adding expense:", error);
-    } finally {
-      setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error setting budget:", error.message);
     }
   };
 
+  
+ 
 
 
 const deleteExpense = async (id) => {
@@ -211,8 +315,10 @@ const deleteExpense = async (id) => {
   });
 };
 
+
+
   return (
-    <ExpenseContext.Provider value={{ expenses, loading, addExpense, deleteExpense  , fetchExpenses , categories  , getCategory , summary , setSummary , catSummary , setCatSummary,getCatSummary , getAllSummary }}>
+    <ExpenseContext.Provider value={{ expenses, loading, addExpense, deleteExpense  , fetchExpenses , categories  , getCategory , summary , setSummary , catSummary , setCatSummary,getCatSummary , getAllSummary , budgets,setBudgets , updateCategoryBudget , fetchBudgets }}>
       {children}
     </ExpenseContext.Provider>
   );
