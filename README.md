@@ -2,23 +2,25 @@
 
 ## 📌 Overview
 
-The **Personal Finance Visualizer** is a web application designed to help users track their financial expenses efficiently. It provides an intuitive interface to **add, edit, delete, and visualize expenses** with dynamic charts. The goal is to help users analyze spending patterns and make informed financial decisions.
+The **Personal Finance Visualizer** is a comprehensive web application designed to help users **track, analyze, and manage their financial expenses** efficiently. With dynamic charts and an intuitive interface, users can visualize spending patterns, set budgets, and make informed financial decisions.
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** Next.js, React, Tailwind CSS, shadcn/ui, Recharts
+- **Frontend:** Next.js, React, Tailwind CSS, Recharts
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB
 
-## ✨ Features Implemented So Far
+## ✨ Features Implemented
 
-✅ **Expense Management:** Users can **add, edit, and delete** expenses dynamically.\
-✅ **Dark Theme UI:** A visually appealing dark theme with **modern styling**.\
-✅ **Category-Based Filtering:** Expenses can be filtered based on **selected categories**.\
-✅ **Pie Chart Visualization:** Uses **Recharts** to display expense breakdown by category.\
-✅ **Dynamic Expense Cards:** Display expenses with **amount, date, and description**.\
-✅ **Responsive Design:** Ensures smooth user experience across **different screen sizes**.\
-✅ **Navigation Bar:** Includes **buttons for adding/viewing expenses and category selection**.
+✅ **Expense Management:** Users can **add, edit, and delete** expenses dynamically.
+✅ **Dark Theme UI:** A visually appealing dark theme with **modern styling**.
+✅ **Category-Based Filtering:** Expenses can be filtered based on **selected categories**.
+✅ **Pie Chart Visualization:** Uses **Recharts** to display expense breakdown by category.
+✅ **Budget Management:** Users can **set monthly budgets** and receive alerts when exceeding limits.
+✅ **Real-Time Insights:** Provides **spending summaries** and highlights overspending areas.
+✅ **Navigation Bar:** Sidebar for easy access to **Analytics, Budget, and Expense Management**.
+✅ **Smooth Transitions:** Implemented **Framer Motion** for enhanced user experience.
+✅ **Responsive Design:** Ensures smooth user experience across **different screen sizes**.
 
 ## 🔧 Installation & Setup
 
@@ -63,10 +65,10 @@ npm run dev
 
 ### 4️⃣ Open in Browser
 
-Visit: [https://finance-visualizer-sx7c.vercel.app/] (Frontend)\
+Visit: [https://finance-visualizer-sx7c.vercel.app/] (Frontend)  
 Backend will be running at: [https://finance-visualizer-snowy.vercel.app/]
 
-## 📊 Current Progress
+## 📊 Project Progress
 
 🚀 **Stage 1 Completed:**
 
@@ -75,17 +77,27 @@ Backend will be running at: [https://finance-visualizer-snowy.vercel.app/]
 - UI styling with dark theme
 - Data visualization with Pie Charts
 
-🎯 **Stage 2 In Progress:**
+✅ **Stage 2 Completed:**
 
-- Enhancing category-based analytics
-- Improving dashboard insights
+- Enhanced category-based analytics
+- Dashboard insights for total spending and recent transactions
+- Budget alerts and overspending highlights
+- Monthly expense tracking with **bar charts**
+
+🎯 **Stage 3 Completed:**
+
+- Budget planning feature for **monthly spending limits**
+- Alert system when **expenses exceed budgets**
+- Full **analytics dashboard** including category breakdowns and visual trends
+- Optimized **API endpoints** for better performance
 
 ---
 
 ## 📌 Next Steps
 
-🔹 **Advanced Reports:** Provide monthly/annual insights.\
-🔹 **Budget Planning:** Allow users to set a budget and track overspending.\
+🔹 **Custom Reports:** Provide **detailed monthly/annual insights**.
+🔹 **Export Feature:** Allow users to **download expense reports as PDFs**.
+🔹 **Improved UI Animations:** Add **smoother transitions** and **interactive charts**.
 
 ## 👨‍💻 Contributing
 
@@ -93,9 +105,9 @@ Contributions are welcome! Feel free to fork this repository and submit a pull r
 
 ## 📩 Contact
 
-For any queries, reach out via email: **[rishabhcryadav@example.com](mailto\:rishabhcryadav@example.com)** or connect on **LinkedIn/GitHub**.
+For any queries, reach out via email: **[rishabhcryadav@example.com](mailto:rishabhcryadav@example.com)** or connect on **LinkedIn/GitHub**.
 
 ---
 
-**🚀 Stay tuned for more updates!** 🎯
+**🚀 Project Completed! Stay tuned for further improvements!** 🎯
 
