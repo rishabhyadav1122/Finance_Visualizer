@@ -9,7 +9,7 @@ const budgetRoute = require('../router/budget-router')
 
 
 
-// Connect to MongoDB Database
+// Connect to MongoDB Database 
 connectDB();
 
 // Middleware
