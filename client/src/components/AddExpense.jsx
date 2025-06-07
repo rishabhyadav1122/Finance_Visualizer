@@ -23,7 +23,7 @@ function AddExpenseForm({ isEdit }) {
   // Fetch expense data if in edit mode
   useEffect(() => {
     if (isEdit && id) {
-      fetch(`http://localhost:5000/api/transactions/getTransaction/${id}`)
+      fetch(`https://finance-visualizer-eta.vercel.app/api/transactions/getTransaction/${id}`)
         .then((res) => res.json())
         .then((data) => setFormData(data))
         .catch((err) => console.error("Error fetching expense:", err));
@@ -44,7 +44,7 @@ function AddExpenseForm({ isEdit }) {
       // Update Expense
       try {
         const response = await fetch(
-          `http://localhost:5000/api/transactions/updateTransaction/${id}`,
+          `https://finance-visualizer-eta.vercel.app/api/transactions/updateTransaction/${id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },

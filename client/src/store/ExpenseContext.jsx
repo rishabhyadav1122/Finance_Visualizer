@@ -34,7 +34,7 @@ export const ExpenseProvider = ({ children }) => {
 
   const getCategory = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/transactions/getCategory');
+      const response = await fetch('https://finance-visualizer-eta.vercel.app/api/transactions/getCategory');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -50,7 +50,7 @@ export const ExpenseProvider = ({ children }) => {
   // Fetch summary
   const getCatSummary = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/transactions/getCatSummary');
+      const response = await fetch('https://finance-visualizer-eta.vercel.app/api/transactions/getCatSummary');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -65,7 +65,7 @@ export const ExpenseProvider = ({ children }) => {
 
   const getAllSummary = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/transactions/getAllSummary');
+      const response = await fetch('https://finance-visualizer-eta.vercel.app/api/transactions/getAllSummary');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -82,7 +82,7 @@ export const ExpenseProvider = ({ children }) => {
   const fetchExpenses = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:5000/api/transactions/getTransaction");
+      const response = await fetch("https://finance-visualizer-eta.vercel.app/api/transactions/getTransaction");
       if (response.ok) {
         const data = await response.json();
         const sortedExpenses = data.sort((a, b) => new Date(b.date) - new Date(a.date)); // Reverse order
@@ -103,7 +103,7 @@ export const ExpenseProvider = ({ children }) => {
   const addExpense = async (expense) => {
     setLoading(true);
     try {
-    const response = await fetch("http://localhost:5000/api/transactions/addTransaction", {
+    const response = await fetch("https://finance-visualizer-eta.vercel.app/api/transactions/addTransaction", {
     method: "POST",
     headers: {
     "Content-Type": "application/json",
@@ -178,7 +178,7 @@ if (response.ok) {
   const fetchBudgets = async () => {
     try {
       // Use fetch to make a GET request
-      const response = await fetch("http://localhost:5000/api/budgets/getAllBudget");
+      const response = await fetch("https://finance-visualizer-eta.vercel.app/api/budgets/getAllBudget");
   
       const data = await response.json();
       // Check if the response is successful
@@ -207,7 +207,7 @@ if (response.ok) {
   const updateCategoryBudget = async (category, amount) => {
     try {
       // Use fetch to make a POST request
-      const response = await fetch("http://localhost:5000/api/budgets/updateCategoryBudget", {
+      const response = await fetch("https://finance-visualizer-eta.vercel.app/api/budgets/updateCategoryBudget", {
         method: "POST", // Specify the HTTP method
         headers: {
           "Content-Type": "application/json", // Set the content type to JSON
@@ -274,7 +274,7 @@ const deleteExpense = async (id) => {
       setLoading(true);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/transactions/deleteTransaction/${id}`,
+          `https://finance-visualizer-eta.vercel.app/api/transactions/deleteTransaction/${id}`,
           { method: "DELETE" }
         );
 

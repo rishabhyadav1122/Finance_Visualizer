@@ -10,7 +10,7 @@ Content-Type: application/json
 } 
 
 ### Get all Transactions
-GET https://finance-visualizer-snowy.vercel.app/api/transactions/getTransaction
+GET https://finance-visualizer-eta.vercel.app/api/transactions/getTransaction
 
 ### Edit the transaction
 PUT http://localhost:5000/api/transactions/updateTransaction/67b62c8ee6d42061caf7851a
